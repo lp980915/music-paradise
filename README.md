@@ -1,8 +1,4 @@
-# 一个简单的音乐网站
-
-#### 技术:  
-SpringBoot+Vue
-
+# SpringBoot+Vue实现的简单的音乐网站
 
 >>>>>>> develop
 
