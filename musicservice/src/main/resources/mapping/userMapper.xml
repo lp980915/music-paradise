@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.music.musicservice.dao.UserDao">
+    <insert id="addComment">
+        insert into comment values (null,#{comment},#{userid},#{musicid},NOW())
+    </insert>
+    <insert id="addCollect">
+        insert into collect values (NOW(),#{userid},#{musicid})
+    </insert>
+    <update id="addMusicHot">
+        update music set hot=hot+1 where musicid=#{musicid}
+    </update>
+    <update id="removeMusicHot">
+        update music set hot=hot-1 where musicid=#{musicid}
+    </update>
+    <delete id="removeCollect">
+        delete from collect where userid=#{userid} and musicid=#{musicid}
+    </delete>
+
+    <select id="getUser" resultType="top.music.musicservice.modal.User">
+        select * from user where userid=#{userid}
+    </select>
+    <select id="existUser" resultType="top.music.musicservice.modal.User">
+        select * from user where username=#{username} and password=#{password}
+    </select>
+    <select id="getMusicList" resultType="top.music.musicservice.modal.Music">
+        select m.*,s.singername from music m,singer s where m.singerid=s.singerid order by hot desc
+    </select>
+    <select id="getCommentList" resultType="top.music.musicservice.modal.Comment">
+        select c.*,u.username from comment c,user u where c.userid=u.userid and c.musicid=#{musicid}
+    </select>
+    <select id="getNextMusic" resultType="top.music.musicservice.modal.Music">
+        select * from music where musicid =(select musicid from music where musicid > #{musicid} order by musicid asc limit 1)
+    </select>
+    <select id="getFirstMusic" resultType="top.music.musicservice.modal.Music">
+        select * from music limit 1
+    </select>
+    <select id="getPreMusic" resultType="top.music.musicservice.modal.Music">
+        select * from music where musicid=(select musicid from music where #{musicid}> musicid order by musicid desc limit 1)
+    </select>
+    <select id="getLastMusic" resultType="top.music.musicservice.modal.Music">
+        select * from music order by musicid desc limit 1
+    </select>
+    <select id="existCollect" resultType="java.lang.Integer">
+        select count(*) from collect where userid=#{userid} and musicid=#{musicid}
+    </select>
+    <select id="searchMusic" resultType="top.music.musicservice.modal.Music">
+        select * from music where musicname like CONCAT("%",#{value},"%")
+    </select>
+    <select id="searchSinger" resultType="top.music.musicservice.modal.Singer">
+        select * from singer where singername like CONCAT("%",#{value},"%")
+    </select>
+    <select id="getSingerList" resultType="top.music.musicservice.modal.Singer">
+        select * from singer
+    </select>
+    <select id="getMusicNumBySingerid" resultType="java.lang.String">
+        select count(*) from music where singerid=#{singerid}
+    </select>
+    <select id="getSingerInfo" resultType="top.music.musicservice.modal.Singer">
+        select * from singer where singerid=#{singerid}
+    </select>
+    <select id="getMusicNameListBySingerid" resultType="top.music.musicservice.modal.Music">
+        select * from music where singerid=#{singerid}
+    </select>
+    <select id="getCollectMusic" resultType="top.music.musicservice.modal.Music">
+        select m.*,c.date from music m,collect c where m.musicid=c.musicid and c.userid=#{userid}
+    </select>
+    <select id="getCollectList" resultType="top.music.musicservice.modal.MusicList">
+        select l.* from list l,collectlist cl,user u where l.listid=cl.listid and u.userid=cl.userid and u.userid=#{userid}
+    </select>
+    <select id="getList" resultType="top.music.musicservice.modal.MusicList">
+        select * from list
+    </select>
+    <select id="getListById" resultType="top.music.musicservice.modal.MusicList">
+        select * from list where listid=#{listid}
+    </select>
+    <select id="getMusicsByListId" resultType="top.music.musicservice.modal.Music">
+        select m.*,s.singername from music m,musiclist ml,singer s where m.singerid=s.singerid and ml.musicid=m.musicid and ml.listid=#{listid}
+    </select>
+    <select id="existCollectList" resultType="java.lang.Integer">
+        select count(*) from collectlist where listid=#{listid} and userid=#{userid}
+    </select>
+    <select id="getMusicByMusicName" resultType="top.music.musicservice.modal.Music">
+        select m.*,s.singername from music m,singer s where m.singerid=s.singerid and m.musicname=#{musicname}
+    </select>
+    <select id="getSingerBySingerName" resultType="top.music.musicservice.modal.Singer">
+        select * from singer where singername=#{singername}
+    </select>
+
+
+</mapper>

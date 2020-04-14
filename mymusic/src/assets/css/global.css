@@ -1,0 +1,11 @@
+/*全局样式表,同级样式可使用!important进行覆盖*/
+html,
+body,
+#app{
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+.ql-editor{
+    min-height:300px;
+}
