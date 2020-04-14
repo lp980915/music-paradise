@@ -30,6 +30,7 @@
                    </a-table-column>
                    <a-table-column dataIndex="hot" key="hot">
                        <span slot="title">热度</span>
+                       <!--aa-->
                    </a-table-column>
                </a-table>
            </a-col>
