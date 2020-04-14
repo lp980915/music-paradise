@@ -78,4 +78,12 @@ public class UserAPI extends ApiController {
     @UserLoginToken
     @GetMapping("/getSingerBySingerName")
     public R<Object> getSingerBySingerName(String singername){return success(userService.getSingerBySingerName(singername));}
+
+    @UserLoginToken
+    @GetMapping("/collectList")
+    public R<Object> collectList(String listid,String userid){return success(userService.collectList(listid,userid));}
+
+    @UserLoginToken
+    @GetMapping("/removeCollectList")
+    public R<Object> removeCollectList(String listid,String userid){return success(userService.removeCollectList(listid,userid));}
 }

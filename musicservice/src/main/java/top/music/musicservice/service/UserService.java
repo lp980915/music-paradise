@@ -40,4 +40,8 @@ public interface UserService {
     Object getMusicByMusicName(String musicname);
 
     Object getSingerBySingerName(String singername);
+
+    Object collectList(String listid, String userid);
+
+    Object removeCollectList(String listid, String userid);
 }

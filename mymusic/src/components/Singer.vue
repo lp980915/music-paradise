@@ -1,7 +1,7 @@
 <template>
     <div>
-        <a-row  :gutter="100">
-            <a-col :span="10"  v-for="(singer,index) in singerList" :key="index" style="margin-top: 30px">
+        <a-row  :gutter="70">
+            <a-col :span="12"  v-for="(singer,index) in singerList" :key="index" style="margin-top: 30px">
                 <a-card  class="activeClass" @click="toSingerInfo(singer.singerid)">
                     <img :src="singer.singerimg" height="100%" width="100%" :alt="singer.singername">
                     <div style="text-align: center;font-size: 20px;margin-top: 15px">{{singer.singername}}</div>

@@ -8,6 +8,9 @@
     <insert id="addCollect">
         insert into collect values (NOW(),#{userid},#{musicid})
     </insert>
+    <insert id="collectList">
+        insert into collectlist values(#{userid},#{listid})
+    </insert>
     <update id="addMusicHot">
         update music set hot=hot+1 where musicid=#{musicid}
     </update>
@@ -16,6 +19,9 @@
     </update>
     <delete id="removeCollect">
         delete from collect where userid=#{userid} and musicid=#{musicid}
+    </delete>
+    <delete id="removeCollectList">
+        delete from collectlist where userid=#{userid} and listid=#{listid}
     </delete>
 
     <select id="getUser" resultType="top.music.musicservice.modal.User">

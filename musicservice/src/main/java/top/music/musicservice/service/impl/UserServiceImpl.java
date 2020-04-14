@@ -159,4 +159,16 @@ public class UserServiceImpl implements UserService {
     public Object getSingerBySingerName(String singername) {
         return userDao.getSingerBySingerName(singername);
     }
+
+    @Override
+    public Object collectList(String listid, String userid) {
+        int result=userDao.collectList(listid,userid);
+        return result>0;
+    }
+
+    @Override
+    public Object removeCollectList(String listid, String userid) {
+        int result=userDao.removeCollectList(listid,userid);
+        return result>0;
+    }
 }

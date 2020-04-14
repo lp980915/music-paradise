@@ -17,7 +17,8 @@
             <span> 生日:</span><span style="margin-left: 40px">{{loginUser.birth}}</span>
         </div>
         <a-button type="primary" size="small" style="margin-top: 30px;font-size: 12px;margin-left: 17px">修改信息</a-button>
-        <a-button size="small" style="margin-left: 30px;font-size: 12px">修改密码</a-button>
+        <a-button type="danger" size="small" style="margin-left: 30px;font-size: 12px">修改密码</a-button>
+        <a-button  v-show="loginUser.rowid==='1'" size="small" style="margin-left: 30px;font-size: 12px">管理面板</a-button>
 
 
         <div v-show="collectMusic.length>0" style="font-size: 22px;margin-top: 100px">歌曲收藏</div>
@@ -38,8 +39,8 @@
             </a-col>
         </a-row>
 
-        <div v-show="collectMusic.length>0" style="font-size: 22px;margin-top: 100px">歌单收藏</div>
-        <a-divider ></a-divider>
+        <div v-show="collectList.length>0" style="font-size: 22px;margin-top: 100px">歌单收藏</div>
+        <a-divider v-show="collectList.length>0"></a-divider>
         <a-row :gutter="[16,16]">
             <a-col :span="6"  v-for="(list,index) in collectList" :key="index">
                 <a-card hoverable @click="toListInfo(list.listid)" style="width: 200px">

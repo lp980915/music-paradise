@@ -7,8 +7,8 @@
             <a-col :span="10">
                     <p style="margin-top: 50px;font-size: 22px">{{listInfo.listname}}</p>
                 <a-divider></a-divider>
-                <a-button type="primary" icon="plus-circle" v-show="!existCollectList">收藏</a-button>
-                <a-button type="danger" icon="minus-circle" v-show="existCollectList">取消收藏</a-button>
+                <a-button type="primary" icon="plus-circle" v-show="!existCollectList" @click="collectList(listInfo.listid)">收藏</a-button>
+                <a-button type="danger" icon="minus-circle" v-show="existCollectList" @click="removeCollectList(listInfo.listid)">取消收藏</a-button>
                     <p style="margin-top: 20px">{{listInfo.listintro}}</p>
             </a-col>
            <a-col :span="20" style="margin-top: 70px">
@@ -84,6 +84,32 @@
                     .then(res=>{
                         console.log(res);
                         this.$router.push({path:'/singerInfo',query:{singerid:res.data.data.singerid}})
+                    }).catch(err=>{
+                    console.log(err);
+                })
+            },
+            collectList:function (listid) {
+                this.axios.get('/user/collectList?listid='+listid+'&userid='+JSON.parse(localStorage.getItem('loginUser')).userid)
+                .then(res=>{
+                    if(res.data.data){
+                        this.$message.success("成功收藏");
+                        this.getListInfo();
+                    }else {
+                        this.$message.success("收藏失败");
+                    }
+                }).catch(err=>{
+                    console.log(err);
+                })
+            },
+            removeCollectList:function (listid) {
+                this.axios.get('/user/removeCollectList?listid='+listid+'&userid='+JSON.parse(localStorage.getItem('loginUser')).userid)
+                    .then(res=>{
+                        if(res.data.data){
+                            this.$message.success("成功取消收藏");
+                            this.getListInfo();
+                        }else {
+                            this.$message.success("取消收藏失败");
+                        }
                     }).catch(err=>{
                     console.log(err);
                 })

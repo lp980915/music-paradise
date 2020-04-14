@@ -63,4 +63,8 @@ public interface UserDao extends BaseMapper {
     Music getMusicByMusicName(String musicname);
 
     Singer getSingerBySingerName(String singername);
+
+    int collectList(String listid, String userid);
+
+    int removeCollectList(String listid, String userid);
 }
