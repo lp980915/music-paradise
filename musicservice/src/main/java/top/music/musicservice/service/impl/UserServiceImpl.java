@@ -1,6 +1,7 @@
 package top.music.musicservice.service.impl;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import top.music.musicservice.dao.UserDao;
 import top.music.musicservice.modal.*;
 import top.music.musicservice.service.UserService;
@@ -8,10 +9,15 @@ import top.music.musicservice.token.TokenService;
 
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -183,5 +189,64 @@ public class UserServiceImpl implements UserService {
     public Object updatePassword(User user) {
         int result=userDao.updatePassword(user);
         return result>0;
+    }
+
+    @Override
+    public Object uploadSingerReq(MultipartFile file, HttpServletRequest req) {
+         int result=0;
+         Map<String,Object> map=new HashMap<>();
+        //首先判断是不是空的文件
+        if (!file.isEmpty()) {
+            //对文文件的全名进行截取然后在后缀名进行删选。
+            int begin = file.getOriginalFilename().indexOf(".");
+            int last = file.getOriginalFilename().length();
+            //获得文件后缀名
+            String a = file.getOriginalFilename().substring(begin, last);
+             //判断文件类型
+            if (a.endsWith(".jpg")||a.endsWith(".png")||a.endsWith(".jfif")) {
+                String realpath=req.getServletContext().getRealPath("/reqimg/");
+                File folder=new File(realpath);
+                File copyFile=new File("musicservice/src/main/resources/static/reqimg/");
+                if(!folder.exists()){
+                    folder.mkdirs();
+                }
+                //获取文件全名
+                String oldName=file.getOriginalFilename();
+                String newName= UUID.randomUUID().toString()+oldName.substring(oldName.lastIndexOf("."));
+                File imgTomcatPath=new File(folder,newName);
+                File localPathFile=new File(copyFile.getAbsolutePath()+File.separator+ newName);
+                System.out.println("真实路径"+localPathFile.toPath());
+                try {
+                    file.transferTo(imgTomcatPath);
+                    Files.copy(imgTomcatPath.toPath(), localPathFile.toPath());
+                }catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+                String url = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + "/reqimg/"+ newName;
+                map.put("imgURL",url);
+            } else {
+                String realpath=req.getServletContext().getRealPath("/reqmusic/");
+                File folder=new File(realpath);
+                File copyFile=new File("musicservice/src/main/resources/static/reqmusic/");
+                if(!folder.exists()){
+                    folder.mkdirs();
+                }
+                //获取文件全名
+                String oldName=file.getOriginalFilename();
+                String newName= UUID.randomUUID().toString()+oldName.substring(oldName.lastIndexOf("."));
+                File imgTomcatPath=new File(folder,newName);
+                File localPathFile=new File(copyFile.getAbsolutePath()+File.separator+ newName);
+                System.out.println("真实路径"+localPathFile.toPath());
+                try {
+                    file.transferTo(imgTomcatPath);
+                    Files.copy(imgTomcatPath.toPath(), localPathFile.toPath());
+                }catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+                String url = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + "/reqmusic/"+ newName;
+                map.put("musicURL",url);
+            }
+        }
+        return map;
     }
 }

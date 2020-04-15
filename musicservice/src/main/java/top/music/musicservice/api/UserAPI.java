@@ -3,12 +3,14 @@ package top.music.musicservice.api;
 import com.baomidou.mybatisplus.extension.api.ApiController;
 import com.baomidou.mybatisplus.extension.api.R;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import top.music.musicservice.modal.Comment;
 import top.music.musicservice.modal.User;
 import top.music.musicservice.service.UserService;
 import top.music.musicservice.token.annotation.UserLoginToken;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/user")
@@ -94,4 +96,9 @@ public class UserAPI extends ApiController {
     @UserLoginToken
     @PostMapping("/updatePassword")
     public R<Object> updatePassword(User user){return success(userService.updatePassword(user));}
+
+
+    @CrossOrigin("http://localhost:8080")
+    @PostMapping("/uploadSingerReq")
+    public R<Object> uploadSingerReq(MultipartFile file, HttpServletRequest req){return success(userService.uploadSingerReq(file,req));}
 }

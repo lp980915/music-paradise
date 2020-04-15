@@ -12,6 +12,7 @@ import MusicInfo from "@/components/MusicInfo";
 import Search from "@/components/Search";
 import SingerInfo from "@/components/SingerInfo";
 import ListInfo from "@/components/ListInfo";
+import SingerRequest from "@/components/SingerRequest";
 
 const routes = [
   {
@@ -68,6 +69,11 @@ const routes = [
         name:'listInfo',
         component: ListInfo
       },
+      {
+        path:'/singerRequest',
+        name:'singerRequest',
+        component: SingerRequest
+      }
     ]
   }
 ]

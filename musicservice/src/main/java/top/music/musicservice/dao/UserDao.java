@@ -71,4 +71,5 @@ public interface UserDao extends BaseMapper {
     int updateUser(User user);
 
     int updatePassword(User user);
+
 }

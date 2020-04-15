@@ -1,8 +1,10 @@
 package top.music.musicservice.service;
 
+import org.springframework.web.multipart.MultipartFile;
 import top.music.musicservice.modal.Comment;
 import top.music.musicservice.modal.User;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public interface UserService {
@@ -48,4 +50,6 @@ public interface UserService {
     Object updateUser(User user);
 
     Object updatePassword(User user);
+
+    Object uploadSingerReq(MultipartFile file, HttpServletRequest req);
 }
