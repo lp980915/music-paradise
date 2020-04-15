@@ -17,6 +17,12 @@
     <update id="removeMusicHot">
         update music set hot=hot-1 where musicid=#{musicid}
     </update>
+    <update id="updateUser">
+        update user set username=#{username},sex=#{sex},birth=#{birth} where userid=#{userid}
+    </update>
+    <update id="updatePassword">
+        update user set password=#{password} where userid=#{userid}
+    </update>
     <delete id="removeCollect">
         delete from collect where userid=#{userid} and musicid=#{musicid}
     </delete>

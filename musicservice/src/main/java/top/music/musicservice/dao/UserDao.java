@@ -67,4 +67,8 @@ public interface UserDao extends BaseMapper {
     int collectList(String listid, String userid);
 
     int removeCollectList(String listid, String userid);
+
+    int updateUser(User user);
+
+    int updatePassword(User user);
 }

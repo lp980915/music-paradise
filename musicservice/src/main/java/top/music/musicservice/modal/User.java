@@ -3,6 +3,8 @@ package top.music.musicservice.modal;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import java.sql.Date;
+
 @Data
 @Accessors(chain = true)
 public class User {
@@ -11,5 +13,5 @@ public class User {
     private String username;
     private String password;
     private String sex;
-    private String birth;
+    private Date birth;
 }

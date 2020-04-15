@@ -26,8 +26,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Object login(User user) {
+    public Object login(User user){
         User loginUser=userDao.existUser(user);
+        /*Thread.sleep(2000);*/
         if(loginUser==null){
             return "用户名或密码有误!";
         }
@@ -169,6 +170,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public Object removeCollectList(String listid, String userid) {
         int result=userDao.removeCollectList(listid,userid);
+        return result>0;
+    }
+
+    @Override
+    public Object updateUser(User user) {
+        int result=userDao.updateUser(user);
+        return result>0;
+    }
+
+    @Override
+    public Object updatePassword(User user) {
+        int result=userDao.updatePassword(user);
         return result>0;
     }
 }

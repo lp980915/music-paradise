@@ -44,4 +44,8 @@ public interface UserService {
     Object collectList(String listid, String userid);
 
     Object removeCollectList(String listid, String userid);
+
+    Object updateUser(User user);
+
+    Object updatePassword(User user);
 }

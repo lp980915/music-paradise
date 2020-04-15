@@ -86,4 +86,12 @@ public class UserAPI extends ApiController {
     @UserLoginToken
     @GetMapping("/removeCollectList")
     public R<Object> removeCollectList(String listid,String userid){return success(userService.removeCollectList(listid,userid));}
+
+    @UserLoginToken
+    @PostMapping("/updateUser")
+    public R<Object> updateUser(@RequestBody User user){return success(userService.updateUser(user));}
+
+    @UserLoginToken
+    @PostMapping("/updatePassword")
+    public R<Object> updatePassword(User user){return success(userService.updatePassword(user));}
 }

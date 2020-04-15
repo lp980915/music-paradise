@@ -70,6 +70,7 @@
                                         this.$message.success("管理员身份登录成功!");
                                         this.axios.defaults.headers.common['token']=res.data.data.token;
                                     }else if(res.data.data.admin===false){
+                                        console.log(res)
                                         localStorage.setItem('admin',"0");
                                         this.$router.push('/welcome');
                                         this.$message.success("用户身份登录成功!");

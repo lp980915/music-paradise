@@ -16,10 +16,59 @@
         <div style="font-size: 17px;margin-top: 20px;margin-left: 20px">
             <span> 生日:</span><span style="margin-left: 40px">{{loginUser.birth}}</span>
         </div>
-        <a-button type="primary" size="small" style="margin-top: 30px;font-size: 12px;margin-left: 17px">修改信息</a-button>
-        <a-button type="danger" size="small" style="margin-left: 30px;font-size: 12px">修改密码</a-button>
+        <a-button type="primary" size="small" style="margin-top: 30px;font-size: 12px;margin-left: 17px" @click="openUserInfoModal">修改信息</a-button>
+        <a-modal
+                :closable="false"
+                title="修改个人信息"
+                :visible="userInfoModal"
+        >
+            <template slot="footer">
+                <a-button @click="userInfoModal=false">取消</a-button>
+                <a-button type="primary" @click="upUserInfo" :loading="upUserLoading">
+                    提交
+                </a-button>
+            </template>
+            <a-form-model :model="upUserForm" ref="upUserForm" :rules="upUserRules">
+                <a-form-model-item label="用户名"  prop="username">
+            <a-input v-model="upUserForm.username"  />
+                </a-form-model-item>
+                <a-form-model-item label="性别" prop="sex">
+                    <a-radio-group v-model="upUserForm.sex">
+                    <a-radio value="男">男</a-radio>
+                    <a-radio value="女">女</a-radio>
+                    </a-radio-group>
+                </a-form-model-item>
+                <a-form-model-item label="生日" prop="birth">
+                    <a-date-picker v-model="upUserForm.birth"/>
+                </a-form-model-item>
+            </a-form-model>
+        </a-modal>
+        <a-button type="danger" size="small" style="margin-left: 30px;font-size: 12px" @click="upPassModal=true">修改密码</a-button>
+        <a-modal
+                :closable="false"
+                title="修改密码"
+                :visible="upPassModal"
+        >
+            <template slot="footer">
+                <a-button @click="upPassModal=false">取消</a-button>
+                <a-button type="primary" @click="upPass" :loading="upPassLoading">
+                    提交
+                </a-button>
+            </template>
+            <a-form-model :model="upPassForm" ref="upPassForm" :rules="upPassRules">
+                <a-form-model-item label="原密码"  prop="oldPass">
+                    <a-input type="password" v-model="upPassForm.oldPass" />
+                </a-form-model-item>
+                <a-form-model-item label="新密码" prop="password">
+                    <a-input type="password" v-model="upPassForm.password" />
+                </a-form-model-item>
+                <a-form-model-item label="确认密码" prop="reNewPass">
+                    <a-input type="password" v-model="upPassForm.reNewPass" />
+                </a-form-model-item>
+            </a-form-model>
+        </a-modal>
         <a-button  v-show="loginUser.rowid==='1'" size="small" style="margin-left: 30px;font-size: 12px">管理面板</a-button>
-
+        <a-button  v-show="loginUser.rowid==='0'" size="small" style="margin-left: 30px;font-size: 12px">歌手申请</a-button>
 
         <div v-show="collectMusic.length>0" style="font-size: 22px;margin-top: 100px">歌曲收藏</div>
         <a-divider ></a-divider>
@@ -46,8 +95,7 @@
                 <a-card hoverable @click="toListInfo(list.listid)" style="width: 200px">
                     <img :alt="list.listname" :src="list.listimg"  slot="cover" style="height: 200px"/>
                     <a-card-meta>
-                        <template slot="description"
-                        >
+                        <template slot="description">
                             <div style="text-align: center">{{list.listname}}</div>
                         </template>
                     </a-card-meta>
@@ -61,13 +109,92 @@
 </template>
 
 <script>
+    import moment from 'moment'
     export default {
         name: "UserInfo",
         data(){
+            var validateOldPass = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请输入原密码'));
+                } else {
+                    let user=JSON.parse(localStorage.getItem('loginUser'));
+                    let password=user.password;
+                    if (this.upPassForm.reNewPass !== '') {
+                        this.$refs.upPassForm.validateField('reNewPass');
+                    }if(password!==value){
+                        callback(new Error('原密码错误'));
+                    }
+                    callback();
+                }
+            };
+            var validateNewPass = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请输入新密码'));
+                } else {
+                    if (this.upPassForm.reNewPass !== '') {
+                        this.$refs.upPassForm.validateField('reNewPass');
+                    }
+                    if(value.length<6||value.length>14){
+                        callback(new Error('密码长度在6-14个字符之间'));
+                    }
+                    if(value===this.upPassForm.oldPass){
+                        callback(new Error('新密码不能与原密码一致'));
+                    }
+                    callback();
+                }
+            };
+            var validateReNewPass = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请再次输入新密码'));
+                } else if (value !== this.upPassForm.password) {
+                    callback(new Error('两次输入密码不一致!'));
+                } else {
+                    callback();
+                }
+            };
             return{
                 loginUser:{},
                 collectMusic:[],
-                collectList:[]
+                collectList:[],
+                userInfoModal:false,
+                upPassModal:false,
+                upUserLoading:false,
+                upPassLoading:false,
+                upUserForm:{
+                    userid:JSON.parse(localStorage.getItem('loginUser')).userid,
+                    username:JSON.parse(localStorage.getItem('loginUser')).username,
+                    sex:JSON.parse(localStorage.getItem('loginUser')).sex,
+                    birth:moment(JSON.parse(localStorage.getItem('loginUser')).birth,'YYYY-MM-DD')
+                },
+                upUserRules:{
+                    username:[
+                        {required:true,message:'请输入用户名',trigger:'change'},
+                        {min:3,max:10, message: '用户名应该在3-10位', trigger: 'change'}
+                        ],
+                    sex:[
+                        {required:true,message:'请选择性别',trigger:'change'},
+                    ],
+                    birth:[
+                        {required:true,message:'请填写生日',trigger:'change'},
+                    ]
+                },
+                upPassRules: {
+                    oldPass: [
+                        { validator: validateOldPass, trigger: 'change' }
+                    ],
+                    password: [
+                        { validator: validateNewPass, trigger: 'change' }
+                    ],
+                    reNewPass: [
+                        { validator: validateReNewPass, trigger: 'change' }
+                    ],
+                },
+                upPassForm:{
+                    userid:JSON.parse(localStorage.getItem('loginUser')).userid,
+                    oldPass:'',
+                    password:'',
+                    reNewPass:''
+                }
             }
         },
         mounted(){
@@ -75,6 +202,61 @@
             this.getCollect();
         },
         methods:{
+            upPass:function(){
+                this.$refs['upPassForm'].validate(valid=>{
+                    if(valid){
+                        this.upPassLoading=true;
+                        let upPassForm=this.$qs.stringify(this.upPassForm);
+                        this.axios.post('/user/updatePassword',upPassForm)
+                        .then(res=>{
+                            if(res.data.data){
+                                this.$message.success('修改成功');
+                                this.$router.push('/login');
+                                localStorage.clear();
+                                sessionStorage.clear();
+                            }else{
+                                this.$message.error("修改失败");
+                            }
+                        }).catch(err=>{
+                            console.log(err);
+                        })
+                    }else {
+                        this.$message.error("请完善信息!");
+                        return false;
+                    }
+                });
+            },
+            upUserInfo:function(){
+              //setInterval();用法和setTimeout类似，但是是周期性调用函数，setTimeout是延迟调用函数
+                this.$refs['upUserForm'].validate(valid=>{
+                    if(valid){
+                        this.upUserLoading=true;
+                        this.axios.post('/user/updateUser',this.upUserForm)
+                        .then(res=>{
+                            if(res.data.data){
+                                this.$message.success("修改成功");
+                                this.upUserLoading=false;
+                                this.loginUser.username=this.upUserForm.username;
+                                this.loginUser.sex=this.upUserForm.sex;
+                                this.loginUser.birth=moment(this.upUserForm.birth).format('YYYY-MM-DD');
+                                localStorage.setItem('loginUser',JSON.parse(this.loginUser))
+                                this.userInfoModal=false;
+                            }else{
+                                this.$message.error('修改失败');
+                            }
+                        }).catch(err=>{
+                            console.log(err);
+                        })
+                    }else {
+                        this.$message.error('请完善用户信息!');
+                        return false;
+                    }
+                })
+            },
+            openUserInfoModal:function(){
+              this.userInfoModal=true;
+
+            },
             toMusicInfo:function (music) {
                 this.$router.push({path:'/musicInfo',query:{music:JSON.stringify(music)}})
             },
