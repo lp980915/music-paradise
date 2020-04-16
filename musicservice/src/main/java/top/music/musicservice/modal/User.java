@@ -14,4 +14,5 @@ public class User {
     private String password;
     private String sex;
     private Date birth;
+    private String oldusername; //修改歌手用到
 }

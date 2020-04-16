@@ -1,5 +1,6 @@
 package top.music.musicservice.dao;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import top.music.musicservice.modal.*;
 
@@ -72,4 +73,18 @@ public interface UserDao extends BaseMapper {
 
     int updatePassword(User user);
 
+    int submitSingerReq(Review review);
+
+    int existSingerReq(String userid);
+
+    int existSingerReqOrNull(String userid);
+
+    int becomeSinger(String userid);
+
+    Review getReview(String userid);
+
+    int addSinger(Review review);
+
+
+    int updateSingerName(User user);
 }

@@ -11,6 +11,12 @@
     <insert id="collectList">
         insert into collectlist values(#{userid},#{listid})
     </insert>
+    <insert id="submitSingerReq">
+        insert into review values (null,#{userid},#{reason},#{details},#{img},#{country},0,#{music})
+    </insert>
+    <insert id="addSinger">
+        insert into singer values (null,#{username},#{details},#{img},#{country})
+    </insert>
     <update id="addMusicHot">
         update music set hot=hot+1 where musicid=#{musicid}
     </update>
@@ -23,6 +29,13 @@
     <update id="updatePassword">
         update user set password=#{password} where userid=#{userid}
     </update>
+    <update id="becomeSinger">
+        update user set rowid=2 where userid=#{userid}
+    </update>
+    <update id="updateSingerName">
+        update singer set singername=#{username} where singername=#{oldusername}
+    </update>
+
     <delete id="removeCollect">
         delete from collect where userid=#{userid} and musicid=#{musicid}
     </delete>
@@ -98,6 +111,15 @@
     </select>
     <select id="getSingerBySingerName" resultType="top.music.musicservice.modal.Singer">
         select * from singer where singername=#{singername}
+    </select>
+    <select id="existSingerReqOrNull" resultType="java.lang.Integer">
+        select count(*) from review where userid=#{userid}
+    </select>
+    <select id="existSingerReq" resultType="java.lang.Integer">
+        select result from review where userid=#{userid}
+    </select>
+    <select id="getReview" resultType="top.music.musicservice.modal.Review">
+        select r.*,u.username from review r,user u where r.userid=u.userid and u.userid=#{userid}
     </select>
 
 

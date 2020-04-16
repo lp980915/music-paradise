@@ -165,7 +165,9 @@
                     userid:JSON.parse(localStorage.getItem('loginUser')).userid,
                     username:JSON.parse(localStorage.getItem('loginUser')).username,
                     sex:JSON.parse(localStorage.getItem('loginUser')).sex,
-                    birth:moment(JSON.parse(localStorage.getItem('loginUser')).birth,'YYYY-MM-DD')
+                    birth:moment(JSON.parse(localStorage.getItem('loginUser')).birth,'YYYY-MM-DD'),
+                    rowid:JSON.parse(localStorage.getItem('loginUser')).rowid,
+                    oldusername:JSON.parse(localStorage.getItem('loginUser')).username,
                 },
                 upUserRules:{
                     username:[
@@ -238,13 +240,9 @@
                         this.axios.post('/user/updateUser',this.upUserForm)
                         .then(res=>{
                             if(res.data.data){
-                                this.$message.success("修改成功");
                                 this.upUserLoading=false;
-                                this.loginUser.username=this.upUserForm.username;
-                                this.loginUser.sex=this.upUserForm.sex;
-                                this.loginUser.birth=moment(this.upUserForm.birth).format('YYYY-MM-DD');
-                                localStorage.setItem('loginUser',JSON.parse(this.loginUser))
-                                this.userInfoModal=false;
+                                this.$router.push('/login');
+                                this.$message.success('修改成功，请重新登录！');
                             }else{
                                 this.$message.error('修改失败');
                             }

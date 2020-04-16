@@ -63,28 +63,32 @@
                             let user=this.$qs.stringify(this.loginForm);
                             this.axios.post('/user/login',user)
                                 .then(res=>{
-                                    localStorage.setItem('token',res.data.data.token);
+                                    if(res.data.data.user!==null&&res.data.data.user!==undefined){
+                                        localStorage.setItem('token',res.data.data.token);
                                     if(res.data.data.user.rowid==="1"){
                                         localStorage.setItem('admin',"1");
                                         this.$router.push('/welcome');
                                         this.$message.success("管理员身份登录成功!");
-                                        this.axios.defaults.headers.common['token']=res.data.data.token;
+                                        localStorage.setItem('loginUser',JSON.stringify(res.data.data.user));
+                                        localStorage.setItem('token',res.data.data.token);
                                     }else if(res.data.data.user.rowid==="0"){
                                         console.log(res)
                                         localStorage.setItem('admin',"0");
                                         this.$router.push('/welcome');
                                         this.$message.success("用户身份登录成功!");
-                                        this.axios.defaults.headers.common['token']=res.data.data.token;
+                                        localStorage.setItem('loginUser',JSON.stringify(res.data.data.user));
+                                        localStorage.setItem('token',res.data.data.token);
                                     }else if(res.data.data.user.rowid==="2"){
                                         console.log(res)
                                         localStorage.setItem('admin',"-1");
                                         this.$router.push('/welcome');
                                         this.$message.success("歌手身份登录成功!");
+                                        localStorage.setItem('loginUser',JSON.stringify(res.data.data.user));
                                         this.axios.defaults.headers.common['token']=res.data.data.token;
+                                    }
                                     }else {
                                         this.$message.error("用户名或密码有误!");
                                     }
-                                    localStorage.setItem('loginUser',JSON.stringify(res.data.data.user));
                                 }).catch(err=>{
                                 console.log(err);
                             })

@@ -1,5 +1,6 @@
 package top.music.musicservice.service.impl;
 
+import com.mysql.cj.util.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import top.music.musicservice.dao.UserDao;
@@ -181,6 +182,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Object updateUser(User user) {
+        System.out.println(user.toString());
+      if(user.getRowid().equals("2")){
+          int result1=userDao.updateSingerName(user);
+      }
         int result=userDao.updateUser(user);
         return result>0;
     }
@@ -248,5 +253,28 @@ public class UserServiceImpl implements UserService {
             }
         }
         return map;
+    }
+
+    @Override
+    public Object submitSingerReq(Review review) {
+        int result=userDao.submitSingerReq(review);
+        return result>0;
+    }
+
+    @Override
+    public Object existSingerReq(String userid) {
+        if(userDao.existSingerReqOrNull(userid)>0){
+            return userDao.existSingerReq(userid);
+        }else {
+            return "无";
+        }
+    }
+
+    @Override
+    public Object becomeSinger(String userid) {
+        int result=userDao.becomeSinger(userid);
+        Review review=userDao.getReview(userid);
+        int result1=userDao.addSinger(review);
+        return result>0&&result1>0;
     }
 }
