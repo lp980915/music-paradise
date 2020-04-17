@@ -6,7 +6,9 @@ import './plugins/ant-design-vue.js'
 import qs from "qs";
 import './assets/css/global.css'
 import { message } from 'ant-design-vue'
+import SlideVerify from 'vue-monoplasty-slide-verify';
 
+Vue.use(SlideVerify);
 Vue.config.productionTip = false;
 Vue.prototype.$qs = qs;
 Vue.prototype.$message = message;

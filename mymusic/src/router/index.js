@@ -14,6 +14,7 @@ import SingerInfo from "@/components/SingerInfo";
 import ListInfo from "@/components/ListInfo";
 import SingerRequest from "@/components/SingerRequest";
 import AdminPage from "@/components/AdminPage";
+import AdminReview from "@/components/AdminReview";
 
 const routes = [
   {
@@ -79,6 +80,11 @@ const routes = [
         path:'/adminPage',
         name:'adminPage',
         component: AdminPage
+      },
+      {
+        path:'/adminReview',
+        name:'adminReview',
+        component: AdminReview
       }
     ]
   }

@@ -122,7 +122,7 @@
         select r.*,u.username from review r,user u where r.userid=u.userid and u.userid=#{userid}
     </select>
     <select id="getReviewList" resultType="top.music.musicservice.modal.Review">
-        select * from review
+        select r.*,u.username from review r,user u where r.userid=u.userid
     </select>
 
 

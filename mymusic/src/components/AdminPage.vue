@@ -4,8 +4,17 @@
         <a-tabs type="card" :animated="true" @change="callback">
             <a-tab-pane tab="歌手审核" key="1">
                 <a-row>
-                    <a-col v-for="(review,index) in reviewList" :key="index">
-                        {{review}}
+                    <a-col><span style="margin-left: 5%">用户</span>
+                        <span style="margin-left: 40%">国籍</span>
+                        <span style="margin-left: 40%">审核状态</span></a-col>
+                    <a-divider></a-divider>
+                    <a-col v-for="(review,index) in reviewList" :key="index" class="reviewList" @click="goAdminReview(review)">
+                        <span style="margin-left: 5%">{{review.username}}</span>
+                        <span style="margin-left: 40%">{{review.country}}</span>
+                        <a-tag style="margin-left: 40%" color="geekblue" v-show="review.result==='0'">未审核</a-tag>
+                        <a-tag style="margin-left: 40%" color="green" v-show="review.result==='1'">审核成功</a-tag>
+                        <a-tag style="margin-left: 40%" color="volcano" v-show="review.result==='-1'">审核失败</a-tag>
+                        <a-divider></a-divider>
                     </a-col>
                 </a-row>
             </a-tab-pane>
@@ -36,6 +45,9 @@
             this.getReview();
         },
         methods:{
+            goAdminReview:function(review){
+                this.$router.push({path:'/adminReview',query:{'review':JSON.stringify(review)}})
+            },
             callback(key) {
                 console.log(key);
             },
@@ -80,5 +92,11 @@
     .card-container > .ant-tabs-card > .ant-tabs-bar .ant-tabs-tab-active {
         border-color: #fff;
         background: #fff;
+    }
+    .reviewList{
+        cursor: pointer;
+    }
+    :hover.reviewList{
+        color: #450a7c;
     }
 </style>
