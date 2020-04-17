@@ -70,14 +70,14 @@
                                         this.$router.push('/welcome');
                                         this.$message.success("管理员身份登录成功!");
                                         localStorage.setItem('loginUser',JSON.stringify(res.data.data.user));
-                                        localStorage.setItem('token',res.data.data.token);
+                                        this.axios.defaults.headers.common['token']=res.data.data.token;
                                     }else if(res.data.data.user.rowid==="0"){
                                         console.log(res)
                                         localStorage.setItem('admin',"0");
                                         this.$router.push('/welcome');
                                         this.$message.success("用户身份登录成功!");
                                         localStorage.setItem('loginUser',JSON.stringify(res.data.data.user));
-                                        localStorage.setItem('token',res.data.data.token);
+                                        this.axios.defaults.headers.common['token']=res.data.data.token;
                                     }else if(res.data.data.user.rowid==="2"){
                                         console.log(res)
                                         localStorage.setItem('admin',"-1");

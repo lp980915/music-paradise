@@ -54,7 +54,7 @@
                     subTitle="请等待管理员进行审核，审核将在24小时之内完成，届时请登录系统查看结果"
             >
                 <template v-slot:extra>
-                    <a-button type="primary" key="console">返回首页</a-button>
+                    <a-button type="primary" key="console" @click="goBack">返回</a-button>
                 </template>
             </a-result>
         </div>
@@ -123,6 +123,9 @@
             }
         },
         methods:{
+            goBack:function(){
+                this.$router.push('/userInfo');
+            },
             becomeSinger:function(){
                 this.axios.get('/user/becomeSinger?userid='+this.singerReqForm.userid)
                 .then(res=>{

@@ -113,4 +113,8 @@ public class UserAPI extends ApiController {
     @UserLoginToken
     @GetMapping("/becomeSinger")
     public R<Object> becomeSinger(String userid){return success(userService.becomeSinger(userid));}
+
+    @UserLoginToken
+    @GetMapping("/getReviewList")
+    public R<Object> getReviewList(){return success(userService.getReviewList());}
 }

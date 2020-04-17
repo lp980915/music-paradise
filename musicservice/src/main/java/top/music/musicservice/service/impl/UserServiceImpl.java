@@ -273,8 +273,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public Object becomeSinger(String userid) {
         int result=userDao.becomeSinger(userid);
-        Review review=userDao.getReview(userid);
+        Review review=userDao.getReviewByUserId(userid);
         int result1=userDao.addSinger(review);
         return result>0&&result1>0;
+    }
+
+    @Override
+    public Object getReviewList() {
+        return userDao.getReviewList();
     }
 }

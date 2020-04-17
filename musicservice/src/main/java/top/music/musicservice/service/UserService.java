@@ -59,4 +59,6 @@ public interface UserService {
     Object existSingerReq(String userid);
 
     Object becomeSinger(String userid);
+
+    Object getReviewList();
 }

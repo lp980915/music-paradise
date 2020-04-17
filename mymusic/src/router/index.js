@@ -13,6 +13,7 @@ import Search from "@/components/Search";
 import SingerInfo from "@/components/SingerInfo";
 import ListInfo from "@/components/ListInfo";
 import SingerRequest from "@/components/SingerRequest";
+import AdminPage from "@/components/AdminPage";
 
 const routes = [
   {
@@ -73,6 +74,11 @@ const routes = [
         path:'/singerRequest',
         name:'singerRequest',
         component: SingerRequest
+      },
+      {
+        path:'/adminPage',
+        name:'adminPage',
+        component: AdminPage
       }
     ]
   }

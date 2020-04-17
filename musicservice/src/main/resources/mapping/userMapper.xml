@@ -118,8 +118,11 @@
     <select id="existSingerReq" resultType="java.lang.Integer">
         select result from review where userid=#{userid}
     </select>
-    <select id="getReview" resultType="top.music.musicservice.modal.Review">
+    <select id="getReviewByUserId" resultType="top.music.musicservice.modal.Review">
         select r.*,u.username from review r,user u where r.userid=u.userid and u.userid=#{userid}
+    </select>
+    <select id="getReviewList" resultType="top.music.musicservice.modal.Review">
+        select * from review
     </select>
 
 
