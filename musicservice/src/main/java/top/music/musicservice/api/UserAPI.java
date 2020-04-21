@@ -12,7 +12,9 @@ import top.music.musicservice.token.annotation.UserLoginToken;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-
+/*
+api
+ */
 @RestController
 @RequestMapping("/api/user")
 public class UserAPI extends ApiController {
