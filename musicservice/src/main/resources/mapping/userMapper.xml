@@ -35,12 +35,21 @@
     <update id="updateSingerName">
         update singer set singername=#{username} where singername=#{oldusername}
     </update>
+    <update id="reviewSuccess">
+        update review set result=1 where userid=#{userid}
+    </update>
+    <update id="reviewFail">
+        update review set result=-1 where userid=#{userid}
+    </update>
 
     <delete id="removeCollect">
         delete from collect where userid=#{userid} and musicid=#{musicid}
     </delete>
     <delete id="removeCollectList">
         delete from collectlist where userid=#{userid} and listid=#{listid}
+    </delete>
+    <delete id="clearFailSubmit">
+        delete from review where userid=#{userid}
     </delete>
 
     <select id="getUser" resultType="top.music.musicservice.modal.User">

@@ -76,7 +76,7 @@
             >
                 <template v-slot:extra>
 
-                    <a-button type="primary" key="console">重新提交</a-button>
+                    <a-button type="primary" key="console" @click="clearFailSubmit">点击确认</a-button>
                 </template>
                 <div style="text-align: center">
                     <p style="font-size: 16px;">
@@ -123,6 +123,14 @@
             }
         },
         methods:{
+            clearFailSubmit:function(){
+                this.axios.get('/user/clearFailSubmit?userid='+this.singerReqForm.userid)
+                .then(res=>{
+                    this.$router.push('/userInfo');
+                }).catch(err=>{
+                    console.log(err);
+                })
+            },
             goBack:function(){
                 this.$router.push('/userInfo');
             },

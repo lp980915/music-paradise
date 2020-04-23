@@ -61,4 +61,10 @@ public interface UserService {
     Object becomeSinger(String userid);
 
     Object getReviewList();
+
+    Object reviewSuccess(String userid);
+
+    Object reviewFail(String userid);
+
+    Object clearFailSubmit(String userid);
 }

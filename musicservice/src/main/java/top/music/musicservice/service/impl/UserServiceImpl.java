@@ -282,4 +282,22 @@ public class UserServiceImpl implements UserService {
     public Object getReviewList() {
         return userDao.getReviewList();
     }
+
+    @Override
+    public Object reviewSuccess(String userid) {
+        int result=userDao.reviewSuccess(userid);
+        return result>0;
+    }
+
+    @Override
+    public Object reviewFail(String userid) {
+        int result=userDao.reviewFail(userid);
+        return result>0;
+    }
+
+    @Override
+    public Object clearFailSubmit(String userid) {
+        int result=userDao.clearFailSubmit(userid);
+        return result>0;
+    }
 }

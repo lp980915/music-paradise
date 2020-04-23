@@ -4,16 +4,16 @@
         <a-tabs type="card" :animated="true" @change="callback">
             <a-tab-pane tab="歌手审核" key="1">
                 <a-row>
-                    <a-col><span style="margin-left: 5%">用户</span>
-                        <span style="margin-left: 40%">国籍</span>
-                        <span style="margin-left: 40%">审核状态</span></a-col>
+                    <a-col :span="8"><span style="margin-left: 10%">用户</span></a-col>
+                        <a-col :span="8">  <span style="margin-left: 40%">国籍</span></a-col>
+                            <a-col :span="8"> <span style="margin-left: 60%">审核状态</span></a-col>
                     <a-divider></a-divider>
                     <a-col v-for="(review,index) in reviewList" :key="index" class="reviewList" @click="goAdminReview(review)">
-                        <span style="margin-left: 5%">{{review.username}}</span>
-                        <span style="margin-left: 40%">{{review.country}}</span>
-                        <a-tag style="margin-left: 40%" color="geekblue" v-show="review.result==='0'">未审核</a-tag>
-                        <a-tag style="margin-left: 40%" color="green" v-show="review.result==='1'">审核成功</a-tag>
-                        <a-tag style="margin-left: 40%" color="volcano" v-show="review.result==='-1'">审核失败</a-tag>
+                        <a-col :span="8"> <span style="margin-left: 10%;">{{review.username}}</span></a-col>
+                        <a-col :span="8"><span style="margin-left: 40%">{{review.country}}</span></a-col>
+                        <a-col :span="8"> <a-tag style="margin-left: 60%" color="geekblue" v-show="review.result==='0'">未审核</a-tag></a-col>
+                        <a-col :span="8"><a-tag style="margin-left: 60%" color="green" v-show="review.result==='1'">审核成功</a-tag></a-col>
+                        <a-col :span="8"> <a-tag style="margin-left: 60%" color="volcano" v-show="review.result==='-1'">审核失败</a-tag></a-col>
                         <a-divider></a-divider>
                     </a-col>
                 </a-row>

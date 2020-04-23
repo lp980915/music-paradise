@@ -10,7 +10,7 @@
         <a-divider />
         <a-row :gutter="[16,16]">
             <a-col :span="6"  v-for="(music,index) in musicList" :key="index">
-                <a-card hoverable @click="toMusicInfo(music)" style="width: 200px">
+                <a-card hoverable @click="toMusicInfo(music)" style="width: 200px" v-show="index<=7">
                     <img :alt="music.musicname" :src="music.musicimg"  slot="cover" style="height: 200px"/>
                     <a-card-meta>
                         <template slot="description"

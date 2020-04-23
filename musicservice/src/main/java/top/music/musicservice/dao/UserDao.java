@@ -89,4 +89,10 @@ public interface UserDao extends BaseMapper {
     int updateSingerName(User user);
 
     List<Review> getReviewList();
+
+    int reviewSuccess(String userid);
+
+    int reviewFail(String userid);
+
+    int clearFailSubmit(String userid);
 }

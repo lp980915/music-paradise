@@ -119,4 +119,16 @@ public class UserAPI extends ApiController {
     @UserLoginToken
     @GetMapping("/getReviewList")
     public R<Object> getReviewList(){return success(userService.getReviewList());}
+
+    @UserLoginToken
+    @GetMapping("/reviewSuccess")
+    public R<Object> reviewSuccess(String userid){return success(userService.reviewSuccess(userid));}
+
+    @UserLoginToken
+    @GetMapping("/reviewFail")
+    public R<Object> reviewFail(String userid){return success(userService.reviewFail(userid));}
+
+    @UserLoginToken
+    @GetMapping("/clearFailSubmit")
+    public R<Object> clearFailSubmit(String userid){return success(userService.clearFailSubmit(userid));}
 }
