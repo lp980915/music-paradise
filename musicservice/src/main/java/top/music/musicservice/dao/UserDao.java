@@ -95,4 +95,10 @@ public interface UserDao extends BaseMapper {
     int reviewFail(String userid);
 
     int clearFailSubmit(String userid);
+
+    List<User> getAllUser();
+
+    int addUser(User user);
+
+    int deleteUser(String userid);
 }

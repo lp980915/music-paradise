@@ -2,7 +2,7 @@
     <div>
         <a-row :gutter="[30,50]" style="margin-top: 8px">
             <a-col :span="8"  v-for="(musiclist,index) in list" :key="index">
-                <a-card hoverable style="width: 300px">
+                <a-card hoverable style="width: 300px" v-show="index<showNum">
                     <img :alt="musiclist.listname" :src="musiclist.listimg"  slot="cover" style="height: 300px"
                          @click="toListInfo(musiclist.listid)"/>
                     <a-card-meta>
@@ -14,7 +14,7 @@
                 </a-card>
             </a-col>
         </a-row>
-        <a-button shape="circle" icon="down" style="margin-left: 48%"></a-button>
+        <a-button shape="circle" icon="down" style="margin-left: 48%" @click="showMore" :disabled="showNum>=list.length" ></a-button>
     </div>
 </template>
 
@@ -23,13 +23,17 @@
         name: "MusicList",
         data(){
             return{
-                list:[]
+                list:[],
+                showNum:6
             }
         },
         created(){
             this.getList();
         },
         methods:{
+            showMore(){
+                this.showNum+=3;
+            },
             getList(){
                 this.axios.get('/user/getList')
                 .then(res=>{

@@ -67,4 +67,10 @@ public interface UserService {
     Object reviewFail(String userid);
 
     Object clearFailSubmit(String userid);
+
+    Object getAllUser();
+
+    Object addUser(User user);
+
+    Object deleteUser(String userid);
 }

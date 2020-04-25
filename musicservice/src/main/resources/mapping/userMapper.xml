@@ -17,6 +17,9 @@
     <insert id="addSinger">
         insert into singer values (null,#{username},#{details},#{img},#{country})
     </insert>
+    <insert id="addUser">
+        insert into user values(null,0,#{username},#{password},#{sex},#{birth})
+    </insert>
     <update id="addMusicHot">
         update music set hot=hot+1 where musicid=#{musicid}
     </update>
@@ -50,6 +53,9 @@
     </delete>
     <delete id="clearFailSubmit">
         delete from review where userid=#{userid}
+    </delete>
+    <delete id="deleteUser">
+        delete from user where userid=#{userid}
     </delete>
 
     <select id="getUser" resultType="top.music.musicservice.modal.User">
@@ -132,6 +138,9 @@
     </select>
     <select id="getReviewList" resultType="top.music.musicservice.modal.Review">
         select r.*,u.username from review r,user u where r.userid=u.userid
+    </select>
+    <select id="getAllUser" resultType="top.music.musicservice.modal.User">
+        select * from user where rowid=0 or rowid=2
     </select>
 
 

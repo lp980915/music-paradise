@@ -131,4 +131,16 @@ public class UserAPI extends ApiController {
     @UserLoginToken
     @GetMapping("/clearFailSubmit")
     public R<Object> clearFailSubmit(String userid){return success(userService.clearFailSubmit(userid));}
+
+    @UserLoginToken
+    @GetMapping("/getAllUser")
+    public R<Object> getAllUser(){return success(userService.getAllUser());}
+
+    @UserLoginToken
+    @PostMapping("/addUser")
+    public R<Object> addUser(@RequestBody User user){return success(userService.addUser(user));}
+
+    @UserLoginToken
+    @GetMapping("/deleteUser")
+    public R<Object> deleteUser(String userid){return success(userService.deleteUser(userid));}
 }

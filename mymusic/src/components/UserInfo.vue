@@ -240,7 +240,8 @@
                 this.$refs['upUserForm'].validate(valid=>{
                     if(valid){
                         this.upUserLoading=true;
-                        this.axios.post('/user/updateUser',this.upUserForm)
+                        let user=this.upUserForm;
+                        this.axios.post('/user/updateUser',user)
                         .then(res=>{
                             if(res.data.data){
                                 this.upUserLoading=false;

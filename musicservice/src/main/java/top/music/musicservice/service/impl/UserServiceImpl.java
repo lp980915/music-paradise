@@ -300,4 +300,21 @@ public class UserServiceImpl implements UserService {
         int result=userDao.clearFailSubmit(userid);
         return result>0;
     }
+
+    @Override
+    public Object getAllUser() {
+        return userDao.getAllUser();
+    }
+
+    @Override
+    public Object addUser(User user) {
+        int result=userDao.addUser(user);
+        return result>0;
+    }
+
+    @Override
+    public Object deleteUser(String userid) {
+        int result=userDao.deleteUser(userid);
+        return result>0;
+    }
 }
