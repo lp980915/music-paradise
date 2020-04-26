@@ -2,6 +2,7 @@ package top.music.musicservice.service.impl;
 
 import com.mysql.cj.util.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import top.music.musicservice.dao.UserDao;
 import top.music.musicservice.modal.*;
@@ -21,6 +22,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
     @Resource
     UserDao userDao;
@@ -59,6 +61,7 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Object getMusicInfo(String musicid,String userid) {
         Map<String,Object> map=new HashMap<>();
@@ -69,6 +72,7 @@ public class UserServiceImpl implements UserService {
         return map;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Object getNextMusic(String musicid) {
        Music music=userDao.getNextMusic(musicid);
@@ -78,6 +82,7 @@ public class UserServiceImpl implements UserService {
        return music;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Object getPreMusic(String musicid) {
         Music music=userDao.getPreMusic(musicid);
@@ -93,6 +98,7 @@ public class UserServiceImpl implements UserService {
         return result>0;
     }
 
+    @Transactional
     @Override
     public Object addCollect(String userid, String musicid) {
         int result=userDao.addCollect(userid,musicid);
@@ -107,6 +113,7 @@ public class UserServiceImpl implements UserService {
         return result>0&&result1>0;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Object search(String value) {
         Map<String,Object> map=new HashMap<>();
@@ -117,6 +124,7 @@ public class UserServiceImpl implements UserService {
         return map;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Object getSingerList() {
          List<Singer> singerList=userDao.getSingerList();
@@ -126,6 +134,7 @@ public class UserServiceImpl implements UserService {
         return singerList;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Object getSingerInfo(String singerid) {
         Singer singer=userDao.getSingerInfo(singerid);
@@ -134,6 +143,7 @@ public class UserServiceImpl implements UserService {
         return singer;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Object getCollect(String userid) {
        HashMap<String,Object> map=new HashMap<>();
@@ -149,6 +159,7 @@ public class UserServiceImpl implements UserService {
         return userDao.getList();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Object getListInfo(String listid,String userid) {
         ListInfo listInfo=new ListInfo();
@@ -180,6 +191,7 @@ public class UserServiceImpl implements UserService {
         return result>0;
     }
 
+    @Transactional
     @Override
     public Object updateUser(User user) {
         System.out.println(user.toString());
@@ -261,6 +273,7 @@ public class UserServiceImpl implements UserService {
         return result>0;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Object existSingerReq(String userid) {
         if(userDao.existSingerReqOrNull(userid)>0){
