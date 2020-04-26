@@ -101,4 +101,12 @@ public interface UserDao extends BaseMapper {
     int addUser(User user);
 
     int deleteUser(String userid);
+
+    List<Music> getAllMusic();
+
+    List<Singer> getAllSinger();
+
+    int updateMusic(Music music);
+
+    int deleteMusic(Music music);
 }

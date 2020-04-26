@@ -48,14 +48,15 @@
                     </a-form-model>
                 </a-modal>
                 <a-table :dataSource="userData">
-                    <a-table-column width="27%" title="用户名" dataIndex="username" key="username" />
-                    <a-table-column width="27%" title="性别" dataIndex="sex" key="sex" />
-                    <a-table-column width="27%" title="生日" dataIndex="birth" key="birth">
+                    <a-table-column width="20%" title="序号" dataIndex="key" key="key" />
+                    <a-table-column width="20%" title="用户名" dataIndex="username" key="username" />
+                    <a-table-column width="20%" title="性别" dataIndex="sex" key="sex" />
+                    <a-table-column width="20%" title="生日" dataIndex="birth" key="birth">
                         <template slot-scope="birth">
                             <span>{{birth}}</span>
                         </template>
                     </a-table-column>
-                    <a-table-column width="19%" title="操作" key="action">
+                    <a-table-column width="20%" title="操作" key="action">
                         <template slot-scope="user">
                             <span>
                                 <a @click="openUpUserModal(user)">修改</a>
@@ -100,9 +101,54 @@
                 </a-modal>
             </a-tab-pane>
             <a-tab-pane tab="曲目管理" key="3">
-                <p>Content of Tab Pane 3</p>
-                <p>Content of Tab Pane 3</p>
-                <p>Content of Tab Pane 3</p>
+                <a-table :dataSource="musicData">
+                    <a-table-column width="20%" title="序号" dataIndex="key" key="key" />
+                    <a-table-column width="20%" title="音乐名" dataIndex="musicname" key="musicname" />
+                    <a-table-column width="20%" title="歌手" dataIndex="singername" key="singername" />
+                    <a-table-column width="20%" title="热度" dataIndex="hot" key="hot">
+                        <template slot-scope="hot">
+                            <span>{{hot}}</span>
+                        </template>
+                    </a-table-column>
+                    <a-table-column width="20%" title="操作" key="action">
+                        <template slot-scope="music">
+                            <span>
+                                <a @click="openUpMusicModal(music)">修改</a>
+                                <a-divider type="vertical" />
+                                <a-popconfirm
+                                        title="确认删除吗？"
+                                        @confirm="deleteMusic(music)"
+                                        okText="Yes"
+                                        cancelText="No"
+                                >
+                                    <a href="#">删除</a>
+                                </a-popconfirm>
+                            </span>
+                        </template>
+                    </a-table-column>
+                </a-table>
+                <a-modal
+                        :closable="false"
+                        title="修改音乐信息"
+                        :visible="upMusicModal"
+                >
+                    <template slot="footer">
+                        <a-button @click="upMusicModal=false">取消</a-button>
+                        <a-button type="primary" @click="updateMusic" >
+                            提交
+                        </a-button>
+                    </template>
+                    <a-form-model :model="upMusicForm" ref="upMusicForm" :rules="upMusicRules">
+                        <a-form-model-item label="音乐名"  prop="musicname">
+                            <a-input v-model="upMusicForm.musicname"  />
+                        </a-form-model-item>
+                        <a-form-model-item label="歌手名" prop="singername">
+                            <a-select :defaultValue="upMusicForm.singername" style="width: 120px" @change="selectNewSinger">
+                                <a-select-option v-for="(singer,index) in singerData" :value="singer.singerid" :key="index">{{singer.singername}}</a-select-option>
+                            </a-select>
+                        </a-form-model-item>
+                    </a-form-model>
+                </a-modal>
             </a-tab-pane>
         </a-tabs>
         </div>
@@ -117,8 +163,11 @@
             return{
                 reviewList:[],
                 userData:[],
+                musicData:[],
+                singerData:[],
                 addUserModal:false,
                 upUserModal:false,
+                upMusicModal:false,
                 addUserForm:{
                     username:'',
                     password:'',
@@ -148,6 +197,16 @@
                         {required:true,message:'请填写生日',trigger:'change'},
                     ]
                 },
+                upMusicRules:{
+                  musicname:[{required:true,message:'请输入音乐名',trigger:'change'}],
+                  singername:[{required:true,message:'请输入歌手名',trigger:'change'}]
+                },
+                upMusicForm:{
+                  musicid:'',
+                    musicname:'',
+                    singerid:'',
+                  singername:'',
+                },
                 upUserRules:{
                     username:[
                         {required:true,message:'请输入用户名',trigger:'change'},
@@ -170,6 +229,48 @@
             this.getReview();
         },
         methods:{
+            selectNewSinger(value){
+              this.upMusicForm.singerid=value;
+            },
+            openUpMusicModal(music){
+                this.upMusicForm=music;
+                this.upMusicModal=true;
+            },
+            updateMusic(){
+                this.$refs['upMusicForm'].validate(valid=>{
+                    if(valid){
+                        let music=this.$qs.stringify(this.upMusicForm);
+                        this.axios.post('/user/updateMusic',music)
+                            .then(res=>{
+                                if(res.data.data){
+                                    this.$message.success('修改成功');
+                                    this.upMusicModal=false;
+                                    this.getAllMusic();
+                                }else {
+                                    this.$message.error('修改失败')
+                                }
+                            }).catch(err=>{
+                            console.log(err);
+                        })
+                    }else{
+                        this.$message.error('请完善信息');
+                        return false;
+                    }});
+            },
+            deleteMusic(music){
+                music=this.$qs.stringify(music);
+                this.axios.post('/user/deleteMusic',music)
+                .then(res=>{
+                    if(res.data.data){
+                        this.$message.success("删除成功");
+                        this.getAllMusic();
+                    }else {
+                        this.$message.error("删除失败");
+                    }
+                }).catch(err=>{
+                    console.log(err);
+                })
+            },
             deleteUser(userid){
                 this.axios.get('/user/deleteUser?userid='+userid)
                 .then(res=>{
@@ -193,18 +294,24 @@
               this.upUserModal=false;
             },
             updateUser(){
-                this.axios.post('/user/updateUser',this.upUserForm)
-                .then(res=>{
-                    if(res.data.data){
-                        this.$message.success("修改成功");
-                        this.upUserModal=false;
-                        this.getAllUser();
+                this.$refs['upUserForm'].validate(valid=>{
+                    if(valid){
+                        this.axios.post('/user/updateUser',this.upUserForm)
+                            .then(res=>{
+                                if(res.data.data){
+                                    this.$message.success("修改成功");
+                                    this.upUserModal=false;
+                                    this.getAllUser();
+                                }else {
+                                    this.$message.error("修改失败");
+                                }
+                            }).catch(err=>{
+                            console.log(err);
+                        })
                     }else {
-                        this.$message.error("修改失败");
-                    }
-                }).catch(err=>{
-                    console.log(err);
-                })
+                        this.$message.error('请完善信息');
+                        return false;
+                    }});
             },
             submitAddUser(){
                 this.$refs['addUserForm'].validate(valid=>{
@@ -253,10 +360,25 @@
             getAllMusic(){
                 this.axios.get('/user/getAllMusic')
                     .then(res=>{
-
+                       let i=0;
+                       let allMusic=res.data.data;
+                       for(let music of allMusic){
+                           music.key=i;
+                           i++
+                       }
+                       this.musicData=allMusic
+                        console.log(this.musicData)
                     }).catch(err=>{
                     console.log(err);
                 })
+            },
+            getAllSinger(){
+              this.axios.get('/user/getAllSinger')
+              .then(res=>{
+                  this.singerData=res.data.data;
+              }).catch(err=>{
+                  console.log(err);
+              })
             },
             goAdminReview:function(review){
                 this.$router.push({path:'/adminReview',query:{'review':JSON.stringify(review)}})
@@ -269,6 +391,7 @@
                 this.getAllUser()
                 }if(key==="3"){
                 this.getAllMusic();
+                this.getAllSinger();
                 }
             },
             getReview(){

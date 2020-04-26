@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.api.R;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import top.music.musicservice.modal.Comment;
+import top.music.musicservice.modal.Music;
 import top.music.musicservice.modal.Review;
 import top.music.musicservice.modal.User;
 import top.music.musicservice.service.UserService;
@@ -143,4 +144,20 @@ public class UserAPI extends ApiController {
     @UserLoginToken
     @GetMapping("/deleteUser")
     public R<Object> deleteUser(String userid){return success(userService.deleteUser(userid));}
+
+    @UserLoginToken
+    @GetMapping("/getAllMusic")
+    public R<Object> getAllMusic(){return success(userService.getAllMusic());}
+
+    @UserLoginToken
+    @GetMapping("/getAllSinger")
+    public R<Object> getAllSinger(){return success(userService.getAllSinger());}
+
+    @UserLoginToken
+    @PostMapping("/updateMusic")
+    public R<Object> updateMusic(Music music){return success(userService.updateMusic(music));}
+
+    @UserLoginToken
+    @PostMapping("/deleteMusic")
+    public R<Object> deleteMusic(Music music){return success(userService.deleteMusic(music));}
 }

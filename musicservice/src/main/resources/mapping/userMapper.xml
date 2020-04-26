@@ -44,6 +44,9 @@
     <update id="reviewFail">
         update review set result=-1 where userid=#{userid}
     </update>
+    <update id="updateMusic">
+        update music set musicname=#{musicname},singerid=#{singerid} where musicid=#{musicid}
+    </update>
 
     <delete id="removeCollect">
         delete from collect where userid=#{userid} and musicid=#{musicid}
@@ -56,6 +59,9 @@
     </delete>
     <delete id="deleteUser">
         delete from user where userid=#{userid}
+    </delete>
+    <delete id="deleteMusic">
+        delete from music where musicid=#{musicid}
     </delete>
 
     <select id="getUser" resultType="top.music.musicservice.modal.User">
@@ -141,6 +147,12 @@
     </select>
     <select id="getAllUser" resultType="top.music.musicservice.modal.User">
         select * from user where rowid=0 or rowid=2
+    </select>
+    <select id="getAllMusic" resultType="top.music.musicservice.modal.Music">
+        select m.*,s.singername from music m,singer s where m.singerid=s.singerid
+    </select>
+    <select id="getAllSinger" resultType="top.music.musicservice.modal.Singer">
+        select * from singer
     </select>
 
 

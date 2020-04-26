@@ -2,6 +2,7 @@ package top.music.musicservice.service;
 
 import org.springframework.web.multipart.MultipartFile;
 import top.music.musicservice.modal.Comment;
+import top.music.musicservice.modal.Music;
 import top.music.musicservice.modal.Review;
 import top.music.musicservice.modal.User;
 
@@ -73,4 +74,12 @@ public interface UserService {
     Object addUser(User user);
 
     Object deleteUser(String userid);
+
+    Object getAllMusic();
+
+    Object getAllSinger();
+
+    Object updateMusic(Music music);
+
+    Object deleteMusic(Music music);
 }

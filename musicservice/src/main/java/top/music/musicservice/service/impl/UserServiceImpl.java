@@ -317,4 +317,39 @@ public class UserServiceImpl implements UserService {
         int result=userDao.deleteUser(userid);
         return result>0;
     }
+
+    @Override
+    public Object getAllMusic() {
+        return userDao.getAllMusic();
+    }
+
+    @Override
+    public Object getAllSinger() {
+        return userDao.getAllSinger();
+    }
+
+    @Override
+    public Object updateMusic(Music music) {
+        int result=userDao.updateMusic(music);
+        return result>0;
+    }
+
+    @Override
+    public Object deleteMusic(Music music) {
+        int result=userDao.deleteMusic(music);
+//          删除音乐文件，暂时只能使用绝对路径，所以暂且不删除文件
+//        int fileResult;
+//        File imgFilePath=new File(music.getMusicimg());
+//        File musicFilePath=new File(music.getMusicfile());
+//        if (imgFilePath.exists()) {  //文件是否存在
+//            if (imgFilePath.delete()) {  //存在就删了，返回1
+//                fileResult =  1;
+//            } else {
+//                fileResult =  0;
+//            }
+//        } else {
+//            fileResult = 0;
+//        }
+        return result>0;
+    }
 }
