@@ -64,6 +64,7 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     @Override
     public Object getMusicInfo(String musicid,String userid) {
+        //aaaa
         Map<String,Object> map=new HashMap<>();
         List<Comment> commentList=userDao.getCommentList(musicid);
         int existCollect=userDao.existCollect(musicid,userid);
