@@ -13,16 +13,46 @@
                     <a-button size="large" block type="primary" @click="submitLogin('loginForm')" style="margin-top: 30px">
                         登录
                     </a-button>
-                    <a-button size="large" block  @click="" style="margin-top: 10px">
+                    <a-button size="large" block  @click="regDialog=true" style="margin-top: 10px">
                         注册
                     </a-button>
                 </a-form-model-item>
             </a-form-model>
+            <a-modal
+                    :closable="false"
+                    title="注册账号"
+                    :visible="regDialog"
+            >
+                <template slot="footer">
+                    <a-button @click="regDialog=false">取消</a-button>
+                    <a-button type="primary" @click="submitReg" >
+                        注册
+                    </a-button>
+                </template>
+                <a-form-model :model="regForm" ref="regForm" :rules="regRules">
+                    <a-form-model-item label="用户名"  prop="username">
+                        <a-input v-model="regForm.username"  />
+                    </a-form-model-item>
+                    <a-form-model-item label="密码"  prop="password">
+                        <a-input type="password" v-model="regForm.password"  />
+                    </a-form-model-item>
+                    <a-form-model-item label="性别" prop="sex">
+                        <a-radio-group v-model="regForm.sex">
+                            <a-radio value="男">男</a-radio>
+                            <a-radio value="女">女</a-radio>
+                        </a-radio-group>
+                    </a-form-model-item>
+                    <a-form-model-item label="生日" prop="birth">
+                        <a-date-picker v-model="regForm.birth"/>
+                    </a-form-model-item>
+                </a-form-model>
+            </a-modal>
         </a-card>
     </div>
 </template>
 
 <script>
+    import moment from 'moment'
     export default {
         name: "Login",
         mounted:function () {
@@ -38,6 +68,13 @@
         },
         data(){
           return{
+              regForm:{
+                  username:'',
+                  password:'',
+                  sex:'',
+                  birth:null
+              },
+              regDialog:false,
               backgroundDiv:{
                   height:'100%',
                   backgroundImage:'url(' + require('@/assets/img/back.jpg') + ')',
@@ -53,7 +90,23 @@
                       { min:3,max:10, message: '用户名应该在3-10位', trigger: 'change' },],
                   password: [ { required: true, message: '请输入密码', trigger: 'change' },
                       { min:6,max:14, message: '密码应该在6-14位', trigger: 'change' },],
-              }
+              },
+              regRules:{
+                  username:[
+                      {required:true,message:'请输入用户名',trigger:'change'},
+                      {min:3,max:10, message: '用户名应该在3-10位', trigger: 'change'}
+                  ],
+                  password:[
+                      {required:true,message:'请输入密码',trigger:'change'},
+                      { min:6,max:14, message:'密码应该在6-14位', trigger: 'change' },
+                  ],
+                  sex:[
+                      {required:true,message:'请选择性别',trigger:'change'},
+                  ],
+                  birth:[
+                      {required:true,message:'请填写生日',trigger:'change'},
+                  ]
+              },
           }
         },
         methods:{
@@ -97,7 +150,30 @@
                             return false;
                         }
                     });
-                }
+                },
+            submitReg:function () {
+                this.$refs['regForm'].validate(valid=>{
+                    if(valid){
+                        let data = this.regForm;
+                        data.birth=moment(this.regForm.birth,"YYYY-MM-DD")
+                        this.$axios.post('/user/reg', data)
+                            .then(res => {
+                                if(res.data.data){
+                                    this.$message.success("注册成功");
+                                    this.regDialog=false;
+                                    this.$refs['regForm'].resetFields();
+                                }else {
+                                    this.$message.error("注册失败");
+                                }
+                            }).catch(err => {
+                            console.log(err);
+                        })
+                    }else{
+                        this.$message.error("请输入有效信息");
+                        return false;
+                    }
+                })
+            }
             },
     }
 </script>

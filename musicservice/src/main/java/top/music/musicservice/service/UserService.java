@@ -82,4 +82,10 @@ public interface UserService {
     Object updateMusic(Music music);
 
     Object deleteMusic(Music music);
+
+    Object uploadMusic(HttpServletRequest req, MultipartFile file);
+
+    Object addMusicBySinger(Music music);
+
+    Object reg(User user);
 }

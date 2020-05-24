@@ -20,6 +20,12 @@
     <insert id="addUser">
         insert into user values(null,0,#{username},#{password},#{sex},#{birth})
     </insert>
+    <insert id="addMusicBySinger">
+        insert into music values (null,#{musicname},#{singerid},0,#{musicimg},#{musicfile})
+    </insert>
+    <insert id="reg">
+        insert into user values (null,0,#{username},#{password},#{sex},#{birth})
+    </insert>
     <update id="addMusicHot">
         update music set hot=hot+1 where musicid=#{musicid}
     </update>
@@ -153,6 +159,9 @@
     </select>
     <select id="getAllSinger" resultType="top.music.musicservice.modal.Singer">
         select * from singer
+    </select>
+    <select id="getSingerIdBySingerName" resultType="java.lang.String">
+        select singerid from singer where singername=#{singername}
     </select>
 
 

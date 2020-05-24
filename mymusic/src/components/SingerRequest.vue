@@ -44,7 +44,9 @@
                 showIcon
         />
         <img src="http://localhost:8088/singerimg/Wiz Khalifa.jpg" alt="例子" style="margin-left:170px;margin-top: 30px">
-        <a-button type="primary" @click="submitSingerReq" :loading="submitLoading" block style="margin-top: 30px">
+        <a-button type="primary" @click="submitSingerReq" :loading="submitLoading" :disabled="singerReqForm.music===''||
+        singerReqForm.img===''||singerReqForm.country===''
+        ||singerReqForm.details===''||singerReqForm.reason===''" block style="margin-top: 30px">
             提交
         </a-button>
         </div>

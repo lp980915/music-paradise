@@ -70,7 +70,7 @@
         </a-modal>
         <a-button  v-show="loginUser.rowid==='1'" size="small" style="margin-left: 30px;font-size: 12px" @click="goAdminPage">管理面板</a-button>
         <a-button  v-show="loginUser.rowid==='0'" size="small" style="margin-left: 30px;font-size: 12px" @click="singerRequest">歌手申请</a-button>
-        <a-button  v-show="loginUser.rowid==='2'" size="small" style="margin-left: 30px;font-size: 12px" @click="">上传歌曲</a-button>
+        <a-button  v-show="loginUser.rowid==='2'" size="small" style="margin-left: 30px;font-size: 12px" @click="goUpLoadMusic">上传歌曲</a-button>
         <div v-show="collectMusic.length>0" style="font-size: 22px;margin-top: 100px">歌曲收藏</div>
         <a-divider ></a-divider>
         <a-row :gutter="[16,16]">
@@ -205,6 +205,9 @@
             this.getCollect();
         },
         methods:{
+            goUpLoadMusic:function(){
+              this.$router.push('/UploadMusic')
+            },
             goAdminPage:function(){
                 this.$router.push('/adminPage');
             },

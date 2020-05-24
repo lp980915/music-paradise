@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     @Override
     public Object getMusicInfo(String musicid,String userid) {
-        //aaaa
+        //测试git
         Map<String,Object> map=new HashMap<>();
         List<Comment> commentList=userDao.getCommentList(musicid);
         int existCollect=userDao.existCollect(musicid,userid);
@@ -364,6 +364,78 @@ public class UserServiceImpl implements UserService {
 //        } else {
 //            fileResult = 0;
 //        }
+        return result>0;
+    }
+
+    @Override
+    public Object uploadMusic(HttpServletRequest req, MultipartFile file) {
+        int result=0;
+        Map<String,Object> map=new HashMap<>();
+        //首先判断是不是空的文件
+        if (!file.isEmpty()) {
+            //对文文件的全名进行截取然后在后缀名进行删选。
+            int begin = file.getOriginalFilename().indexOf(".");
+            int last = file.getOriginalFilename().length();
+            //获得文件后缀名
+            String a = file.getOriginalFilename().substring(begin, last);
+            //判断文件类型
+            if (a.endsWith(".jpg")||a.endsWith(".png")||a.endsWith(".jfif")) {
+                String realpath=req.getServletContext().getRealPath("/musicimg/");
+                File folder=new File(realpath);
+                File copyFile=new File("musicservice/src/main/resources/static/musicimg/");
+                if(!folder.exists()){
+                    folder.mkdirs();
+                }
+                //获取文件全名
+                String oldName=file.getOriginalFilename();
+                String newName= UUID.randomUUID().toString()+oldName.substring(oldName.lastIndexOf("."));
+                File imgTomcatPath=new File(folder,newName);
+                File localPathFile=new File(copyFile.getAbsolutePath()+File.separator+ newName);
+                System.out.println("真实路径"+localPathFile.toPath());
+                try {
+                    file.transferTo(imgTomcatPath);
+                    Files.copy(imgTomcatPath.toPath(), localPathFile.toPath());
+                }catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+                String url = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + "/musicimg/"+ newName;
+                map.put("musicimg",url);
+            } else {
+                String realpath=req.getServletContext().getRealPath("/musicfile/");
+                File folder=new File(realpath);
+                File copyFile=new File("musicservice/src/main/resources/static/musicfile/");
+                if(!folder.exists()){
+                    folder.mkdirs();
+                }
+                //获取文件全名
+                String oldName=file.getOriginalFilename();
+                String newName= UUID.randomUUID().toString()+oldName.substring(oldName.lastIndexOf("."));
+                File imgTomcatPath=new File(folder,newName);
+                File localPathFile=new File(copyFile.getAbsolutePath()+File.separator+ newName);
+                System.out.println("真实路径"+localPathFile.toPath());
+                try {
+                    file.transferTo(imgTomcatPath);
+                    Files.copy(imgTomcatPath.toPath(), localPathFile.toPath());
+                }catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+                String url = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + "/musicfile/"+ newName;
+                map.put("musicfile",url);
+            }
+        }
+        return map;
+    }
+
+    @Override
+    public Object addMusicBySinger(Music music) {
+        music.setSingerid(userDao.getSingerIdBySingerName(music));
+        int result=userDao.addMusicBySinger(music);
+        return result>0;
+    }
+
+    @Override
+    public Object reg(User user) {
+        int result=userDao.reg(user);
         return result>0;
     }
 }

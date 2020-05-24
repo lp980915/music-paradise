@@ -25,6 +25,9 @@ public class UserAPI extends ApiController {
     @PostMapping("/login")
     public R<Object> login(User user){return success(userService.login(user));}
 
+    @PostMapping("/reg")
+    public R<Object> reg(@RequestBody User user){return success(userService.reg(user));}
+
     @UserLoginToken
     @GetMapping("/getMusicList")
     public R<Object> getMusicList(){return success(userService.getMusicList());}
@@ -160,4 +163,12 @@ public class UserAPI extends ApiController {
     @UserLoginToken
     @PostMapping("/deleteMusic")
     public R<Object> deleteMusic(Music music){return success(userService.deleteMusic(music));}
+
+    @CrossOrigin("http://localhost:8080")
+    @PostMapping("/uploadMusic")
+    public R<Object> uploadMusic(HttpServletRequest req,MultipartFile file){return success(userService.uploadMusic(req,file));}
+
+    @UserLoginToken
+    @PostMapping("/addMusicBySinger")
+    public R<Object> addMusicBySinger(Music music){return success(userService.addMusicBySinger(music));}
 }
